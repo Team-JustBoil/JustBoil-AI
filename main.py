@@ -7,10 +7,23 @@ from dotenv import load_dotenv
 import os
 import requests
 import json
+from starlette.middleware.cors import CORSMiddleware
+import uvicorn
 
 load_dotenv()  # .env 파일에서 환경 변수를 불러옵니다.
 app = FastAPI()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+origins = [
+    "*"
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 mysql_params = {
     "host": os.getenv("DB_HOST"),
@@ -103,6 +116,5 @@ def get_recipe_recommendation():
     return recipe_recommendation
     
 if __name__ == "__main__":
-    import uvicorn
 
     uvicorn.run(app, host="127.0.0.1", port=8080)

@@ -2,9 +2,11 @@ import pytube
 import os
 import os.path
 from moviepy.editor import AudioFileClip
+from dotenv import load_dotenv
 from openai import OpenAI
 
-client = OpenAI()
+load_dotenv()  # .env 파일에서 환경 변수를 불러옵니다.
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def youtube_to_mp3(youtube_id):
     link = "https://www.youtube.com/watch?v=" + youtube_id
@@ -54,11 +56,16 @@ def mp3_to_text(mp3_file_path):
             print("텍스트 길이 줄였음")
 
         print("텍스트 변환 완료: " + transcript)
-        return transcript
 
     except Exception as e:
         print(f"텍스트 변환 실패: {e}")
         return None
+    finally:
+        # Delete the MP3 file
+        os.remove(mp3_file_path)
+        print(f"파일 삭제됨: {mp3_file_path}")
+    
+    return transcript
 
 def summarize_text(text_to_summarize, client):
     try:

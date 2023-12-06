@@ -1,7 +1,8 @@
-fastapi==0.68.0
-pytube==11.0.1
-openai==0.10.2
-PyMySQL==1.0.2
-python-dotenv==0.19.0
-requests==2.25.1
-moviepy==1.0.3
+fastapi
+pytube
+openai
+pymysql
+python-dotenv
+requests
+moviepy
+uvicorn
